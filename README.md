@@ -18,4 +18,6 @@ go get github.com/swaggo/echo-swagger
 go get github.com/go-playground/validator/v10
 // untuk call restapi
 go get github.com/valyala/fasthttp
+// untuk hot reloa 
+go install github.com/cosmtrek/air@latest
  ```
