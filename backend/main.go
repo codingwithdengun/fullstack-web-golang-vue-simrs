@@ -1,10 +1,15 @@
 package main
 
+import (
+	"backend/api/configs"
+	"fmt"
+)
+
 func init() {
 	configs.SetupConfiguration()
 }
 func main() {
 
 	db := configs.InitDB()
-	route.CreateHandler(db)
+	fmt.Println("DATA : ", db)
 }

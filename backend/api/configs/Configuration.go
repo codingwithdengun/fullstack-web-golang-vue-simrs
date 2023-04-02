@@ -1,7 +1,8 @@
 package configs
 
 import (
-	"log"
+	"os"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
@@ -32,20 +33,18 @@ func SetupConfiguration() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yml")
 	viper.AddConfigPath(".development")
-
-	err := viper.ReadInConfig; err != nil {
-		log.Fatal("Error Reading Config File", err)
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Fatal("Error Reading Config File : ", err.Error())
 		return
 	}
-
 	Config = new(Configuration)
-	err := viper.Unmarshal(&Config)
-
-	err := nil {
-		log.Fatal("Unable to decode into struct", err)
+	viper.Unmarshal(&Config)
+	if err != nil {
+		log.Fatal("Unable to decode into struct", err.Error())
 		return
 	}
-	
+
 	log.SetFormatter(&log.JSONFormatter{})
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.DebugLevel)

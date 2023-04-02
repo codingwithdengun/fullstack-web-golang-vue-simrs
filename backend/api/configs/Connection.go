@@ -3,14 +3,42 @@ package configs
 import (
 	"fmt"
 	"net/url"
+	"time"
+
+	log "github.com/sirupsen/logrus"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func initDB() *gorm.DB {
+func InitDB() *gorm.DB {
 
 	val := url.Values{}
 
 	val.Add("parseTime", "True")
 	val.Add("loc", "Asia/Jakarta")
 
-	dsn := fmt.Sprintf(`%s:%s@tcp(%s:%v)/%s?%s`, configs.)
+	dsn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s", Config.Database.DBHost, Config.Database.DBPort, Config.Database.DBUser, Config.Database.DBName, Config.Database.DBPass)
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	if err != nil {
+		log.Fatal("Cannot Connected Database", err.Error())
+		return nil
+	}
+
+	sqlDB, err := db.DB()
+	err = sqlDB.Ping()
+
+	if err != nil {
+		log.Fatal("Request Timeout ", err)
+		return nil
+	}
+
+	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetConnMaxIdleTime(time.Minute * 3)
+	sqlDB.SetMaxOpenConns(10)
+	sqlDB.SetConnMaxLifetime(time.Minute * 3)
+
+	log.Info("Connected Database" + Config.Database.DBDriver)
+	return db
 }
