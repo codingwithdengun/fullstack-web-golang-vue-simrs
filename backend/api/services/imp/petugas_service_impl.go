@@ -26,13 +26,38 @@ func (r *PetugasServiceImpl) ViewUser() ([]models.Petugas, error) {
 }
 
 // cari data by id
-func (r *PetugasServiceImpl) FindById(id uint) (models.Petugas, error)
+func (r *PetugasServiceImpl) FindById(id uint) (models.Petugas, error) {
+	get, err := r.petugasRepo.PetugasFinById(id)
+	if err != nil {
+		return models.Petugas{}, err
+	}
+	return get, err
+}
 
 // cari data berdasarkan nama
-func (r *PetugasServiceImpl) FindByPetugas(name string) (models.Petugas, error)
+func (r *PetugasServiceImpl) FindByPetugas(name string) (models.Petugas, error) {
+	get, err := r.petugasRepo.PetugasFindByName(name)
+
+	if err != nil {
+		return models.Petugas{}, err
+	}
+	return get, err
+}
 
 // proses update petugas
-func (r *PetugasServiceImpl) UpdatePetugas(data models.PetugasRequest, id uint) (bool, error)
+func (r *PetugasServiceImpl) UpdatePetugas(data models.PetugasRequest, id uint) (bool, error) {
+	get, err := r.petugasRepo.PetugasUpdate(data, id)
+	if err != nil {
+		return false, err
+	}
+	return get, nil
+}
 
 // proses delete petugas
-func (r *PetugasServiceImpl) DeletePetugas(id uint) (bool, error)
+func (r *PetugasServiceImpl) DeletePetugas(id uint) (bool, error) {
+	get, err := r.petugasRepo.PetugasDelete(id)
+	if err != nil {
+		return false, err
+	}
+	return get, err
+}
