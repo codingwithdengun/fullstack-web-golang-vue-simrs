@@ -1,6 +1,7 @@
 package configs
 
 import (
+	"backend/api/models"
 	"fmt"
 	"net/url"
 	"time"
@@ -25,7 +26,25 @@ func InitDB() *gorm.DB {
 		log.Fatal("Cannot Connected Database", err.Error())
 		return nil
 	}
+	err = db.AutoMigrate(
+		&models.Petugas{},
+		&models.DetailFaktur{},
+		&models.DetailRekamMedis{},
+		&models.Dokter{},
+		&models.FakturPembayaran{},
+		&models.KamarInap{},
+		&models.Obat{},
+		&models.Pasien{},
+		&models.Pendaftaran{},
+		&models.Perawat{},
+		&models.Poli{},
+		&models.RekamMedis{},
+	)
 
+	if err != nil {
+		log.Fatal("Failed Migrated ")
+		return nil
+	}
 	sqlDB, err := db.DB()
 	err = sqlDB.Ping()
 
